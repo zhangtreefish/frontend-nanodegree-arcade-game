@@ -1,4 +1,10 @@
 // Enemies our player must avoid
+var Character =function (x,y, sprite, speed){ // making a superclass for Enemy and Player
+    this.x=x;
+    this.y=y;
+    this.sprite=sprite;
+    this.speed=speed;
+}
 var Enemy = function(x,y) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
@@ -17,12 +23,12 @@ Enemy.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
     var speed=Math.random();
-    this.x=this.x+Math.sin(speed)*dt*10;
-    this.y=this.y+Math.cos(speed)*dt*10;
-    if (this.x>ctx.width){ //need to fix the wrap around
+    this.x=this.x+Math.sin(speed)*dt*30;
+    this.y=this.y+Math.cos(speed)*dt*20;
+    if (this.x>300){ //need to fix the wrap around
        this.x=this.x-speed*dt*10;;
     }
-    if (this.y>ctx.height){
+    if (this.y>300){
        this.y=this.y-speed*dt*10;
     }
 }
@@ -36,29 +42,49 @@ Enemy.prototype.render = function() {
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
-var Player = function(x,y){
+var Player = function(x,y, speed){
     this.x=x;
     this.y=y;
     this.char ='images/char-cat-girl.png';
+    this.speed=speed;
 }
 Player.prototype.update=function(){
     this.handleInput();
-    console.log("Player-update");
 }
 Player.prototype.render=function(){
     ctx.drawImage(Resources.get( this.char ), this.x, this.y);
 }
-Player.prototype.handleInput=function(){
-    console.log("player-handleInput");
+Player.prototype.handleInput=function(laLleva){
+    switch(laLleva){
+        case "left" :
+        this.x -=this.speed;
+        break;
+        case "up":
+        this.y -=this.speed;
+        break;
+        case "right":
+        this.x +=this.speed;
+        break;
+        case "down":
+        this.y +=this.speed;
+        break;
+    }
 }
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 var allEnemies=[];
-allEnemies[0]=new Enemy(100,300);
-allEnemies[1]=new Enemy(300, 300);
+for (var i=0; i<2; i++){
+    for (var j=0; j<2; j++) {
+        var stagger=new Date().getMilliseconds();//introduce some stagger at entry of each pair of enemies
+        allEnemies.push(new Enemy(i*stagger, j*stagger));
+    }
+}
+    //allEnemies[0]=new Enemy(0,200);
+//allEnemies[1]=new Enemy(150, 300);
+//allEnemies[2]=new Enemy(300, 100);
 
 // Place the player object in a variable called player
-var player=new Player(200, 300);
+var player=new Player(200, 300,25);
 
 
 // This listens for key presses and sends the keys to your

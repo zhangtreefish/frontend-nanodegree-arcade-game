@@ -13,12 +13,14 @@
  * the canvas' context (ctx) object globally available to make writing app.js
  * a little simpler to work with.
  */
+var currentScene; //To set up multiple scenes,
 
 var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
      * set the canvas elements height/width and add it to the DOM.
      */
+    currentScene=1;
     var doc = global.document,
         win = global.window,
         canvas = doc.createElement('canvas'),
@@ -58,15 +60,34 @@ var Engine = (function(global) {
          */
         win.requestAnimationFrame(main);
     };
+//I am copying the darting dot codes from the HTML Canvas class taught by Cameron and William
+//to add some interest.
+function animate() {
+    requestAnimationFrame(animate); //To do: to figure out how to manipulate the speed of the darting dot
+    draw();
+}
+function draw() {
+    var time = new Date().getTime() * 0.002;
+    var x = Math.sin(time) * 196 + 238;
+    var y = Math.cos(time*0.9) * 196 + 348;
+
+    ctx.fillStyle = 'rgb(255,0,0)';
+    ctx.beginPath();
+    ctx.arc( x, y, 10, 0, Math.PI * 2, true );
+    ctx.closePath();
+    ctx.fill();
+}
 
     /* This function does some initial setup that should only occur once,
      * particularly setting the lastTime variable that is required for the
      * game loop.
      */
+
     function init() {
         reset();
         lastTime = Date.now();
         main();
+        animate();  //added; see "animate() code comment"
     }
 
     /* This function is called by main (our game loop) and itself calls all
@@ -163,6 +184,22 @@ var Engine = (function(global) {
         // noop
     }
 
+    //To set up multiple scenes, nothing upon mouse click yet.
+
+    mouseClicked = function() {
+        if (currentScene === 1) {
+            drawScene2();
+        }
+        else if (currentScene===2) {
+            this;
+        }
+    };
+        var drawScene2=function(){
+            currentScene=2;
+            ctx.fillStyle = 'rgb(245,245,245)';
+            ctx.fillRect( 0, 0, 255, 255 );
+            console.log("Good job", 200,200);
+        }
     /* Go ahead and load all of the images we know we're going to need to
      * draw our game level. Then set init as the callback method, so that when
      * all of these images are properly loaded our game will start.
