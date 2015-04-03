@@ -53,8 +53,15 @@ Player.prototype.constructor=Player;
 //Player.prototype.render deligates to Character.prototype.render
 Player.prototype.update=function(){
     this.handleInput();
+    if ((this.x<0)||(this.x>canvas.width)||(this.y<0)||(this.y>canvas.height)){
+        this.reset();
+    }
 }
-
+Player.prototype.reset=function(){
+    this.x=200;
+    this.y=300;
+    alert("going back to the start!", 220, 300);
+}
 Player.prototype.handleInput=function(laLleva){
     switch(laLleva){
         case "left" :
