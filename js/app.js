@@ -17,7 +17,6 @@ var Enemy = function(x,y, sprite, speed) {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     Character.call(this, x, y, sprite, speed);
-    //Above I use superclass Character to derive subclass Enemy from.
 }
 
 // Update the enemy's position, required method for game
@@ -31,10 +30,10 @@ Enemy.prototype.update = function(dt) {
     this.x=this.x+this.speed*dt*30;
     this.y=this.y+this.speed*dt*20;
     if (this.x>canvas.width){ //need to fix the wrap around
-       this.x=20;
+       this.x=canvas.width/4;
     }
     if (this.y>canvas.height){
-       this.y=20;
+       this.y=canvas.height/3;
     }
 }
 
@@ -43,24 +42,17 @@ Enemy.prototype.update = function(dt) {
 
 // Now write your own player class
 // This class requires an update(), render() and
-// a handleInput() method.
+// a handleInput() method.*Player.prototype.render deligates
+//to Character.prototype.render
 
 var Player = function(x,y,sprite, speed){
     Character.call(this, x, y, sprite, speed);
 }
 Player.prototype=Object.create(Character.prototype);
 Player.prototype.constructor=Player;
-//Player.prototype.render deligates to Character.prototype.render
-Player.prototype.update=function(){
-    this.handleInput();
-    if ((this.x<0)||(this.x>canvas.width)||(this.y<0)||(this.y>canvas.height)){
-        this.reset();
-    }
-}
 Player.prototype.reset=function(){
-    this.x=200;
-    this.y=300;
-    alert("going back to the start!", 220, 300);
+    this.x=20;
+    this.y=400;
 }
 Player.prototype.handleInput=function(laLleva){
     switch(laLleva){
@@ -78,19 +70,47 @@ Player.prototype.handleInput=function(laLleva){
         break;
     }
 }
+Player.prototype.collisionCheck=function(enemy){
+    if (this.crossPath(enemy)){
+        this.reset();
+        console.log("collided with enemy and start again");
+        //when I replaced with ctx.stroke
+        //Text, the darting red ball started to leave trails when
+        //player collide with enemy. Why?
+        ctx.font = "30px Arial";
+        ctx.strokeText("collision!", 100, 100);
+        alert("collision!");//alert not showing. Why not?
+    }
+}
+Player.prototype.crossPath=function(enemy){
+    if (this.x-40<enemy.x&&this.x+40>enemy.x&&this.y-40<enemy.y&&this.y+40>enemy.y){
+        return true;
+    }
+    return false;
+}
+Player.prototype.update=function(){
+    this.handleInput();
+    if ((this.x<0)||(this.x>canvas.width)||(this.y<0)||(this.y>canvas.height)){
+        alert("No crossing the border! Go back to the start!", 220, 300);
+        this.reset();
+    }
+    for (var i=0; i<allEnemies.length; i++){
+        this.collisionCheck(allEnemies[i]);
+    }
+}
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 var allEnemies=[];
 for (var i=1; i<3; i++){
     for (var j=1; j<3; j++) {
         var sprite = 'images/enemy-bug.png';
-        allEnemies.push(new Enemy(i*80, j*100, sprite,0.3*i*j));
+        allEnemies.push(new Enemy(i*120, j*200, sprite,0.3*i*j));
     }
 }
 
 // Place the player object in a variable called player
 var sprite='images/char-cat-girl.png';
-var player=new Player(200, 300,sprite,25);
+var player=new Player(0, 400,sprite,25);
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
