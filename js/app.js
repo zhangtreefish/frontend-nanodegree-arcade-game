@@ -66,7 +66,7 @@ Player.prototype.constructor=Player;
 
 Player.prototype.reset=function(){
     this.x=20;
-    this.y=400;
+    this.y=450;
 }
 
 Player.prototype.handleInput=function(laLleva){
@@ -89,7 +89,7 @@ Player.prototype.handleInput=function(laLleva){
 Player.prototype.collisionCheck=function(enemy){
     if (this.crossPath(enemy)){
         this.reset();
-        alert("Collision, start again!");//TODO: figure out how to continue the alert after the first alert
+        alert("Oh man, bumped into defender, start again!");//TODO: figure out how to continue the alert after the first alert
     }
 }
 
@@ -98,7 +98,7 @@ Player.prototype.collectionCheck=function(gem){
     if(this.crossPath(gem)){
         gem.putaway();
         this.speed *=2;
-        alert("Got a gem! Player will move twice as fast.");
+        alert("Caught a meal! Virus will move twice as fast.");
     }
 }
 
@@ -109,10 +109,11 @@ Player.prototype.crossPath=function(object){
 
 Player.prototype.update=function(){
     this.handleInput();
-    if (this.y<=0){
-        this.y=0;
-        alert("Congratulations, you have arrIved!");//TODO: figure out why if I add ctx.strokeText("Wow!"); here, the red darting dot leaves trail
-    } else if (this.x<-40||this.x>canvas.width-40||this.y>canvas.height-40){
+    if (this.y<=30){
+        this.y=30;
+        alert("Uh-oh, the virus made it to the bloodstream!");//TODO: figure out why if I add ctx.strokeText("Wow!"); here, the red darting dot leaves trail
+        this.reset();
+    } else if (this.x<-40||this.x>canvas.width-40||this.y>canvas.height-110){
         alert("No crossing the border! Start over.");
         this.reset();
     }
@@ -129,20 +130,20 @@ Player.prototype.update=function(){
 var allEnemies=[];
 for (var i=1; i<3; i++){
     for (var j=1; j<3; j++) {
-        var sprite = 'images/enemy-bug.png';
+        var sprite = 'images/dendriticCell.jpg';
         allEnemies.push(new Enemy(i*120, j*200, sprite,0.3*i*j));
     }
 }
 
-//Place gems in an array allGems
+//Place the abiders endothelial cells in an array allGems
 var allGems=[];
-var gemGreen="images/gem-green.png", gemBlue="images/gem-blue.png";
-allGems[0]=new Gem(150, 100,gemGreen);
-allGems[1]=new Gem(250, 260, gemBlue);
+var gemGreen="images/endothelialCells.jpg";
+allGems[0]=new Gem(50, 200,gemGreen);
+allGems[1]=new Gem(350, 260, gemGreen);
 
-// Place the player object in a variable called player
-var sprite='images/char-cat-girl.png';
-var player=new Player(0, 400,sprite,10);
+// Place the player virys in a variable called player
+var sprite='images/HIV.jpg';
+var player=new Player(20, 450,sprite,10);
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.

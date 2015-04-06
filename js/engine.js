@@ -211,10 +211,9 @@ function draw() {
         'images/stone-block.png',
         'images/water-block.png',
         'images/grass-block.png',
-        'images/enemy-bug.png',
-        'images/char-cat-girl.png',
-        'images/gem-blue.png', //changed the capitalized file name to lower case to adhere to the convention
-        'images/gem-green.png' //changed the capitalized file name to lower case to adhere to the convention
+        'images/dendriticCell.jpg',//changed the enemy bugs to one type of defenders of our immunity-dendritic cells
+        'images/HIV.jpg',//changed the player to a virus-HIV
+        'images/endothelialCells.jpg' //changed the gems to endothelial cells which HIV can also infect
     ]);
     Resources.onReady(init);
 

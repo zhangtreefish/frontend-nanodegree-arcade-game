@@ -6,5 +6,8 @@ Students should use this rubric: https://www.udacity.com/course/viewer#!/c-ud015
 for self-checking their submission.
 
 Welcome to my Frogger game!
-You will move the girl player with the up, down, left, and right keys. Your goal is to reach the water without bumping into the enemy bugs, or venturing outside the playground. You may become twice as faster by collecting the positive energy in each gem.  The red darting dot is just to cheer you on, and will not jeopadize your mission upon encountering.
+Who:
+There are four characters in the game: the controllable virus (the player), the dendritic cells (the enemy) who eliminate upon collision, the stationary endothelial cells (the Gem) which energize the virus making it twice as fast, and the red darting dot who simply watches.
+How:
+Your goal is to help the virus to navigate towards the blood stream. You will move the virus with the up, down, left, and right keys. You should be careful not to bump into the dendritic cells, or venture outside the playground. You may become twice as fast by collecting the positive energy in each endothelial cell.
 Enjoy, and write me feedbacks. Thank you!
