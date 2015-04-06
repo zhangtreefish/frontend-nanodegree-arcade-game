@@ -1,14 +1,16 @@
-// making a superclass for Enemy and Player
+// making a superclass for Enemy, Player, and Gem
 var Character =function (x,y, sprite, speed){
     this.x=x;
     this.y=y;
     this.sprite=sprite;
     this.speed=speed;
 }
-//the render() below can be used for both Enemy and Player subclasses.
+
+//the render() below can be used for both Enemy, Player, and Gem subclasses.
 Character.prototype.render=function(){
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
+
 //Gems for the player to collect,
 var Gem=function(x,y, sprite) {
     Character.call(this, x, y, sprite,0);
@@ -19,6 +21,7 @@ Gem.prototype.putaway=function(){
     this.x=-100;
     this.y=-100;
 }
+
 // Enemies our player must avoid
     var Enemy = function(x,y, sprite, speed) {
     // Variables applied to each of our instances go here,
@@ -60,10 +63,12 @@ var Player = function(x,y,sprite, speed){
 }
 Player.prototype=Object.create(Character.prototype);
 Player.prototype.constructor=Player;
+
 Player.prototype.reset=function(){
     this.x=20;
     this.y=400;
 }
+
 Player.prototype.handleInput=function(laLleva){
     switch(laLleva){
         case "left" :
@@ -80,12 +85,14 @@ Player.prototype.handleInput=function(laLleva){
         break;
     }
 }
+
 Player.prototype.collisionCheck=function(enemy){
     if (this.crossPath(enemy)){
         this.reset();
         alert("Collision, start again!");//TODO: figure out how to continue the alert after the first alert
     }
 }
+
 //player collect gems, and gains speed after each collection
 Player.prototype.collectionCheck=function(gem){
     if(this.crossPath(gem)){
@@ -94,10 +101,12 @@ Player.prototype.collectionCheck=function(gem){
         alert("Got a gem! Player will move twice as fast.");
     }
 }
+
 //crossPath can be used to check meeting of player with either enemy or gem
 Player.prototype.crossPath=function(object){
     return(object.x-20<this.x&&object.x+20>this.x&&object.y-20<this.y&&object.y+20>this.y) ? true: false;
 }
+
 Player.prototype.update=function(){
     this.handleInput();
     if (this.y<=0){
@@ -114,6 +123,7 @@ Player.prototype.update=function(){
         this.collectionCheck(allGems[i]);
     }
 }
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 var allEnemies=[];
@@ -123,6 +133,7 @@ for (var i=1; i<3; i++){
         allEnemies.push(new Enemy(i*120, j*200, sprite,0.3*i*j));
     }
 }
+
 //Place gems in an array allGems
 var allGems=[];
 var gemGreen="images/gem-green.png", gemBlue="images/gem-blue.png";

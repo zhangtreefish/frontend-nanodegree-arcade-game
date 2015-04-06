@@ -188,7 +188,6 @@ function draw() {
     }
 
     //TODO:To set up multiple scenes, nothing upon mouse click yet.
-
     mouseClicked = function() {
         if (currentScene === 1) {
             drawScene2();
@@ -199,10 +198,11 @@ function draw() {
     };
         var drawScene2=function(){
             currentScene=2;
-            ctx.fillStyle = 'rgb(245,245,245)';
-            ctx.fillRect( 0, 0, 255, 255 );
-            console.log("Good job", 200,200);
+            ctx.fillStyle ='rgb(245,245,245)';
+            ctx.fillRect(0,0,255,255);
+            console.log("Good job",200,200);
         }
+
     /* Go ahead and load all of the images we know we're going to need to
      * draw our game level. Then set init as the callback method, so that when
      * all of these images are properly loaded our game will start.
