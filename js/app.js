@@ -9,8 +9,18 @@ var Character =function (x,y, sprite, speed){
 Character.prototype.render=function(){
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
+//Gems for the player to collect,
+var Gem=function(x,y, sprite) {
+    Character.call(this, x, y, sprite,0);
+}
+Gem.prototype=Object.create(Character.prototype);
+Gem.prototype.constructor=Gem;
+Gem.prototype.putaway=function(){
+    this.x=-100;
+    this.y=-100;
+}
 // Enemies our player must avoid
-var Enemy = function(x,y, sprite, speed) {
+    var Enemy = function(x,y, sprite, speed) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
@@ -73,29 +83,35 @@ Player.prototype.handleInput=function(laLleva){
 Player.prototype.collisionCheck=function(enemy){
     if (this.crossPath(enemy)){
         this.reset();
-        console.log("collided with enemy and start again");
-        //when I replaced with ctx.stroke
-        //Text, the darting red ball started to leave trails when
-        //player collide with enemy. Why?
-        ctx.font = "30px Arial";
-        ctx.strokeText("collision!", 100, 100);
-        alert("collision!");//alert not showing. Why not?
+        alert("Collision, start again!");//TODO: figure out how to continue the alert after the first alert
     }
 }
-Player.prototype.crossPath=function(enemy){
-    if (this.x-40<enemy.x&&this.x+40>enemy.x&&this.y-40<enemy.y&&this.y+40>enemy.y){
-        return true;
+//player collect gems, and gains speed after each collection
+Player.prototype.collectionCheck=function(gem){
+    if(this.crossPath(gem)){
+        gem.putaway();
+        this.speed *=2;
+        alert("Got a gem! Player will move twice as fast.");
     }
-    return false;
+}
+//crossPath can be used to check meeting of player with either enemy or gem
+Player.prototype.crossPath=function(object){
+    return(object.x-20<this.x&&object.x+20>this.x&&object.y-20<this.y&&object.y+20>this.y) ? true: false;
 }
 Player.prototype.update=function(){
     this.handleInput();
-    if ((this.x<0)||(this.x>canvas.width)||(this.y<0)||(this.y>canvas.height)){
-        alert("No crossing the border! Go back to the start!", 220, 300);
+    if (this.y<=0){
+        this.y=0;
+        alert("Congratulations, you have arrIved!");//TODO: figure out why if I add ctx.strokeText("Wow!"); here, the red darting dot leaves trail
+    } else if (this.x<-40||this.x>canvas.width-40||this.y>canvas.height-40){
+        alert("No crossing the border! Start over.");
         this.reset();
     }
     for (var i=0; i<allEnemies.length; i++){
         this.collisionCheck(allEnemies[i]);
+    }
+    for (var i=0; i<allGems.length;i++){
+        this.collectionCheck(allGems[i]);
     }
 }
 // Now instantiate your objects.
@@ -107,10 +123,15 @@ for (var i=1; i<3; i++){
         allEnemies.push(new Enemy(i*120, j*200, sprite,0.3*i*j));
     }
 }
+//Place gems in an array allGems
+var allGems=[];
+var gemGreen="images/gem-green.png", gemBlue="images/gem-blue.png";
+allGems[0]=new Gem(150, 100,gemGreen);
+allGems[1]=new Gem(250, 260, gemBlue);
 
 // Place the player object in a variable called player
 var sprite='images/char-cat-girl.png';
-var player=new Player(0, 400,sprite,25);
+var player=new Player(0, 400,sprite,10);
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
