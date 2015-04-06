@@ -30,7 +30,7 @@ var Engine = (function(global) {
     canvas.width = 505;
     canvas.height = 606;
     doc.body.appendChild(canvas);
-    global.canvas=canvas;
+    global.canvas=canvas; //added this so that canvas.width can be referenced in app.js
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -173,7 +173,9 @@ function draw() {
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
-
+        allGems.forEach(function(gem){
+            gem.render();
+        });
         player.render();
     }
 
@@ -185,7 +187,7 @@ function draw() {
         // noop
     }
 
-    //To set up multiple scenes, nothing upon mouse click yet.
+    //TODO:To set up multiple scenes, nothing upon mouse click yet.
 
     mouseClicked = function() {
         if (currentScene === 1) {
@@ -210,7 +212,9 @@ function draw() {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-cat-girl.png'
+        'images/char-cat-girl.png',
+        'images/gem-blue.png', //changed the capitalized file name to lower case to adhere to the convention
+        'images/gem-green.png' //changed the capitalized file name to lower case to adhere to the convention
     ]);
     Resources.onReady(init);
 
