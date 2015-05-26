@@ -141,7 +141,7 @@ var gemGreen="images/endothelialCells.jpg";
 allGems[0]=new Gem(50, 200,gemGreen);
 allGems[1]=new Gem(350, 260, gemGreen);
 
-// Place the player virys in a variable called player
+// Place the player virus in a variable called player
 var sprite='images/HIV.jpg';
 var player=new Player(20, 450,sprite,10);
 
